@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modèle de l'atome — Cours interactif TCS · Pr Hicham MESBAH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1b2340;--navy:#14213d;--navy2:#22305a;--amber:#f2a541;--amber-d:#c97d10;--teal:#2a9d8f;--coral:#e76f51;--red:#e63946;--blue:#3d6fb6;--paper:#fbf8f1;--card:#fff;--line:#e6dfd0;--muted:#5d6475;--violet:#6d4bb0}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.62}
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(90deg,#14213d,#2d2b6b);color:#fff;box-shadow:0 2px 14px rgba(0,0,0,.25)}
+.top-in{max-width:1180px;margin:auto;padding:8px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:Fraunces,serif;font-weight:700;color:var(--amber);font-size:15px;white-space:nowrap;text-decoration:none}
+nav.sec{display:flex;gap:3px;overflow-x:auto;flex:1;scrollbar-width:none;min-width:0}
+nav.sec::-webkit-scrollbar{display:none}
+nav.sec a{color:#dfe3f3;text-decoration:none;font-size:13px;padding:5px 10px;border-radius:999px;white-space:nowrap;font-family:Fraunces,serif;font-weight:500}
+nav.sec a.on,nav.sec a:hover{background:rgba(242,165,65,.22);color:#fff}
+.tools{display:flex;gap:6px}
+.btn{font-family:Fraunces,serif;font-weight:700;font-size:13px;border:0;border-radius:999px;padding:6px 13px;cursor:pointer;background:var(--amber);color:#2a1a00;transition:transform .1s,filter .2s}
+.btn:hover{filter:brightness(1.06)}.btn:active{transform:scale(.96)}
+.btn.ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28)}
+.btn.o{background:#fff;color:var(--ink);border:1px solid #cfc7e8}
+.btn.o.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.t{background:var(--teal);color:#fff}
+.btn.v{background:var(--violet);color:#fff}
+.btn.sm{font-size:12px;padding:5px 10px}
+.prog{height:3px;background:linear-gradient(90deg,var(--amber),var(--coral));width:0}
+main{max-width:1100px;margin:auto;padding:20px 14px 60px}
+.chap{display:none}.chap.on{display:block}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;background:radial-gradient(circle at 80% 20%,#3b3a8a,#14213d 70%);color:#fff;border-radius:22px;padding:26px;border:3px solid var(--amber);box-shadow:0 14px 40px rgba(20,33,61,.3)}
+.hero .pill{display:inline-block;background:var(--amber);color:#2a1a00;font-family:Fraunces,serif;font-weight:700;font-size:13px;border-radius:999px;padding:4px 14px}
+.hero .pill2{display:inline-block;margin-top:10px;border:1px solid rgba(255,255,255,.35);font-size:12px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 12px;color:#cfe8e4}
+.hero h1{font-family:Fraunces,serif;font-size:34px;line-height:1.15;margin:14px 0 10px}
+.hero h1 em{color:var(--amber);font-style:normal}
+.hero p{color:#dfe3f3;font-size:15.5px;margin:0 0 14px}
+.hero-cv{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.18);border-radius:16px;overflow:hidden;min-height:200px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:22px 0}
+.cards a{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 4px 16px rgba(20,33,61,.05);transition:transform .15s,box-shadow .15s}
+.cards a:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,33,61,.12)}
+.cards a i{font-style:normal;font-family:Fraunces,serif;font-weight:800;color:var(--amber-d);font-size:13px;letter-spacing:.06em}
+.cards a b{display:block;font-family:Fraunces,serif;color:var(--navy2);font-size:18px;margin:2px 0 4px}
+.cards a span{display:block;font-size:14px;color:var(--muted);line-height:1.45}
+.chead{background:linear-gradient(120deg,#14213d,#33307a);color:#fff;border-radius:18px;padding:18px 22px;border-bottom:4px solid var(--amber);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.chead .k{font-family:Fraunces,serif;font-weight:800;font-size:13px;color:var(--amber);letter-spacing:.08em;text-transform:uppercase}
+.chead h1{font-family:Fraunces,serif;margin:2px 0 0;font-size:28px;line-height:1.15}
+.chead .s{margin-left:auto;font-family:Fraunces,serif;font-style:italic;font-size:13px;color:#d9d3ff}
+section.ch{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin:22px 0;box-shadow:0 6px 24px rgba(20,33,61,.06)}
+.ch-h{display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:12px}
+.num{background:var(--navy);color:var(--amber);font-family:Fraunces,serif;font-weight:800;border-radius:10px;min-width:40px;height:40px;display:grid;place-items:center;font-size:17px}
+h2{font-family:Fraunces,serif;font-size:23px;margin:0;flex:1;line-height:1.2}
+.sig{font-family:Fraunces,serif;font-style:italic;font-size:12px;color:var(--violet);background:#f1ecfb;border-radius:999px;padding:3px 10px;white-space:nowrap}
+h3{font-family:Fraunces,serif;font-size:18px;color:var(--navy2);border-left:4px solid var(--amber);padding:4px 10px;background:#f5f3fb;border-radius:0 8px 8px 0;margin:22px 0 10px}
+.box{border:2px solid var(--amber);border-radius:12px;padding:16px 16px 12px;margin:18px 0 14px;background:#fffdf6;position:relative}
+.box .tag{position:absolute;top:-12px;left:14px;background:var(--navy);color:#fff;font-family:Fraunces,serif;font-size:12px;padding:2px 11px;border-radius:999px}
+.f{text-align:center;font-size:21px;font-style:italic;margin:4px 0 8px}
+.box ul{margin:4px 0;padding-left:20px;font-size:15.5px}
+.box p{margin:4px 0;font-size:15.5px}
+.note{border-left:4px solid var(--teal);background:#eef8f6;padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0;font-size:16px}
+.note.warn{border-left-color:var(--coral);background:#fdf1ec}
+.note.star{border-left-color:var(--amber);background:#fff7e8}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sim{border:1px solid #d9d3f0;background:#f7f6fd;border-radius:14px;padding:12px;margin:20px 0}
+.sim-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.sim-h b{font-family:Fraunces,serif;flex:1;min-width:210px;font-size:16px}
+.sim-h b i{font-style:normal;color:var(--amber-d)}
+.stage{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+canvas{display:block;width:100%;touch-action:manipulation}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:9px;font-size:14.5px}
+.ctrl label{display:flex;align-items:center;gap:6px}
+.ctrl label b{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--violet);min-width:62px}
+.ctrl select{font-family:inherit;font-size:14px;padding:4px 8px;border-radius:8px;border:1px solid #cfc7e8;background:#fff}
+input[type=range]{accent-color:var(--violet);width:150px}
+.read{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;margin-top:9px;font-family:'JetBrains Mono',monospace;color:var(--navy2)}
+.read b{color:var(--coral)}
+.eq{background:#fff;border:1px dashed #cfc7e8;border-radius:10px;padding:10px 14px;margin-top:9px;font-size:16px}
+.sim.zoom{position:fixed;inset:0;z-index:100;margin:0;border-radius:0;overflow:auto;padding:14px max(14px,calc((100vw - 1100px)/2))}
+.rv{display:inline-block;min-width:5.8em;text-align:center;background:#fdebc8;border-bottom:2px dashed var(--amber-d);color:transparent;cursor:pointer;border-radius:5px;padding:0 .35em;position:relative;line-height:1.35;user-select:none;transition:background .25s}
+.rv:after{content:"✦ Révéler";position:absolute;inset:0;color:#a8640c;font-size:.74em;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;white-space:nowrap}
+.rv.on{color:var(--navy);font-weight:600;background:#e2f4ef;border-bottom-color:var(--teal)}
+.rv.on:after{display:none}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.25}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 4px}
+.sq{white-space:nowrap}.sq:before{content:"√";font-style:normal}.sq>span{border-top:1.5px solid currentColor;padding:0 2px}
+table.t{border-collapse:collapse;width:100%;font-size:15px;margin:10px 0;background:#fff}
+table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:center}
+table.t th{background:#f1eefb;font-family:Fraunces,serif;font-weight:700;color:var(--navy2)}
+.tw{overflow-x:auto}
+details.sol{border:1px solid #cfe6e1;border-radius:12px;background:#f6fbfa;margin:12px 0;padding:0 14px}
+details.sol summary{cursor:pointer;font-family:Fraunces,serif;font-weight:700;color:var(--teal);padding:10px 0}
+details.sol[open]{padding-bottom:10px}
+.ex{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:14px 0;background:#fffefb}
+.ex>b{font-family:Fraunces,serif;color:var(--coral)}
+.q{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:#fff}
+.q p{margin:0 0 8px;font-weight:600}
+.q .ops{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q button{font-family:inherit;font-size:15px;text-align:left;border:1px solid #d6d0ea;background:#faf9ff;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--ink)}
+.q button:hover:not(:disabled){border-color:var(--violet)}
+.q button.ok{background:#dff3ee;border-color:var(--teal)}
+.q button.ko{background:#fde4df;border-color:var(--coral)}
+.q button:disabled{cursor:default}
+.q .exp{display:none;margin-top:8px;font-size:14.5px;color:var(--navy2);background:#f5f3fb;border-radius:8px;padding:6px 10px}
+.q.done .exp{display:block}
+.score{position:sticky;bottom:10px;margin:16px auto 0;max-width:480px;background:var(--navy);color:#fff;border-radius:999px;padding:9px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:Fraunces,serif;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.score b{color:var(--amber);font-size:20px}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:12px 0;font-family:Fraunces,serif;font-size:14px}
+.chain span{background:#fff;border:2px solid var(--violet);border-radius:10px;padding:6px 10px;font-weight:700;color:var(--navy2)}
+.chain em{font-style:normal;color:var(--amber-d);font-weight:800}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.pager a{flex:1;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-family:Fraunces,serif;font-weight:700;color:var(--navy2)}
+.pager a.n{text-align:right}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:30px 10px 40px}
+footer b{font-family:Fraunces,serif;color:var(--violet)}
+@media(max-width:760px){
+ body{font-size:16px}
+ .hero{grid-template-columns:1fr;padding:18px}
+ .hero h1{font-size:27px}
+ .grid2{grid-template-columns:1fr}
+ section.ch{padding:16px 14px}
+ h2{font-size:20px}
+ .sig,.chead .s{display:none}
+ .chead h1{font-size:23px}
+ .q .ops{grid-template-columns:1fr}
+ .brand{font-size:13px}
+ .f{font-size:18px}
+ input[type=range]{width:120px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="top-in">
+  <a class="brand" href="#accueil">⚛ Pr Hicham MESBAH</a>
+  <nav class="sec" id="nav">
+   <a href="#accueil">Accueil</a><a href="#constitution">I. Constitution</a><a href="#symbole">II. Symbole du noyau</a><a href="#dimensions">III. Dimensions</a><a href="#element">IV. Isotopes &amp; ions</a><a href="#repartition">V. Répartition électronique</a><a href="#synthese">VI. Synthèse</a>
+  </nav>
+  <div class="tools"><button class="btn sm" id="revealAll">✦ Tout révéler</button><button class="btn ghost sm" id="fs">⛶ Plein écran</button></div>
+ </div>
+ <div class="prog" id="prog"></div>
+</header>
+
+<main>
+<!-- ======================= ACCUEIL ======================= -->
+<div class="chap" id="accueil">
+ <div class="hero">
+  <div>
+   <span class="pill">✎ Cours interactif de Chimie · TCS — Pr Hicham MESBAH</span><br>
+   <span class="pill2">Tronc Commun Scientifique · Programme marocain</span>
+   <h1>Le modèle de l'atome :<br><em>noyau, électrons, isotopes, ions</em></h1>
+   <p>Six parties interactives : construis tes propres atomes, zoome jusqu'au noyau, refais l'expérience de Rutherford, forme des ions et remplis les couches K, L, M. Les pointillés du polycopié sont à révéler en cliquant dessus, et chaque partie se termine par un quiz noté sur 20.</p>
+  </div>
+  <div class="hero-cv"><canvas id="cvHero"></canvas></div>
+ </div>
+ <div class="cards">
+  <a href="#constitution"><i>PARTIE I</i><b>Constitution de l'atome</b><span>Noyau, protons, neutrons, électrons ; charges, masses et neutralité électrique.</span></a>
+  <a href="#symbole"><i>PARTIE II</i><b>Représentation symbolique du noyau</b><span>Le symbole <sup>A</sup><sub>Z</sub>X : nombre de masse, numéro atomique, nombre de neutrons.</span></a>
+  <a href="#dimensions"><i>PARTIE III</i><b>Dimensions de l'atome</b><span>Atome et noyau, rapport 10⁵, expérience de Rutherford, structure lacunaire.</span></a>
+  <a href="#element"><i>PARTIE IV</i><b>Élément chimique, isotopes et ions</b><span>Le numéro atomique Z, les isotopes, les cations et les anions.</span></a>
+  <a href="#repartition"><i>PARTIE V</i><b>Répartition électronique</b><span>Couches K, L, M, règles de remplissage, électrons de valence (Z ≤ 18).</span></a>
+  <a href="#synthese"><i>PARTIE VI</i><b>Exercice de synthèse</b><span>Un exercice complet corrigé étape par étape, un générateur d'exercices et la fiche « Je retiens ».</span></a>
+ </div>
+ <div class="note star"><b>Mode d'emploi :</b> les cases <span class="rv on">comme celle-ci</span> correspondent aux pointillés du polycopié. Clique dessus pour révéler la réponse, ou utilise « ✦ Tout révéler » en haut. Essaie toujours de trouver la réponse avant de cliquer !</div>
+</div>
+
+<!-- ======================= I. CONSTITUTION ======================= -->
+<div class="chap" id="constitution">
+ <div class="chead"><div><div class="k">Partie I · Chimie TCS</div><h1>Constitution de l'atome</h1></div><div class="s">✎ Pr Hicham MESBAH · TCS</div></div>
+ <section class="ch">
+  <div class="ch-h"><div class="num">1</div><h2>Le noyau et les électrons</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>L'atome est constitué :</p>
+  <ul>
+   <li>d'un <span class="rv">noyau</span> central, formé de <span class="rv">protons</span> et de <span class="rv">neutrons</span> ; on les appelle des <span class="rv">nucléons</span> ;</li>
+   <li>d'<span class="rv">électrons</span> qui se déplacent autour du noyau.</li>
+  </ul>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 1 :</i> L'atome de lithium — 3 protons, 4 neutrons, 3 électrons</b><button class="btn t sm" id="liGo">▶ Rejouer</button><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvLi"></canvas></div>
+   <div class="ctrl"><label><input type="checkbox" id="liLab" checked> Afficher les noms</label><label>Vitesse des électrons <input type="range" id="liV" min="0" max="3" step="0.1" value="1"></label></div>
+  </div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">2</div><h2>Caractéristiques des particules</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>Charge élémentaire : <b>e = <span class="rv">1,6 × 10⁻¹⁹</span> C</b></p>
+  <div class="tw"><table class="t">
+   <tr><th>Particule</th><th>Symbole</th><th>Charge</th><th>Masse (kg)</th></tr>
+   <tr><td>Proton</td><td>p</td><td><span class="rv">+e</span></td><td>1,673 × 10⁻²⁷</td></tr>
+   <tr><td>Neutron</td><td>n</td><td><span class="rv">0</span></td><td>1,675 × 10⁻²⁷</td></tr>
+   <tr><td>Électron</td><td>e⁻</td><td><span class="rv">−e</span></td><td>9,1 × 10⁻³¹</td></tr>
+  </table></div>
+  <div class="note">Le proton est <b>positif</b>, l'électron est <b>négatif</b>, le neutron est <b>neutre</b> (d'où son nom). Le proton et le neutron ont presque la même masse.</div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">3</div><h2>Masse de l'atome</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <div class="box"><span class="tag">Calcul</span><div class="f">m<sub>p</sub> / m<sub>e</sub> = 1,673 × 10⁻²⁷ / 9,1 × 10⁻³¹ ≈ <span class="rv">1840</span></div></div>
+  <p>La masse des électrons est <span class="rv">négligeable</span> devant celle des nucléons. La masse de l'atome est donc concentrée dans son <span class="rv">noyau</span> : <b>m<sub>atome</sub> ≈ <span class="rv">A × m<sub>p</sub></span></b> (A = nombre de nucléons).</p>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 2 :</i> La balance — combien d'électrons pour équilibrer un proton ?</b><button class="btn t sm" id="balGo">▶ Lancer</button><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvBal"></canvas></div>
+   <div class="read" id="balRead"></div>
+  </div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">4</div><h2>Neutralité électrique</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>L'atome est électriquement <span class="rv">neutre</span> car il contient autant de <span class="rv">protons</span> que d'<span class="rv">électrons</span>.</p>
+  <div class="box"><span class="tag">À retenir</span><p>Charge du noyau : <b>+Z·e</b> ; charge des électrons : <b>−Z·e</b> ; charge totale : <b>0</b>.</p></div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 3 :</i> Construis ton atome !</b><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvBuild"></canvas></div>
+   <div class="ctrl"><label>Protons <input type="range" id="bP" min="1" max="18" step="1" value="6"><b id="bPv"></b></label><label>Neutrons <input type="range" id="bN" min="0" max="22" step="1" value="6"><b id="bNv"></b></label><label>Électrons <input type="range" id="bE" min="0" max="18" step="1" value="6"><b id="bEv"></b></label></div>
+   <div class="read" id="bRead"></div>
+  </div>
+ </section>
+ <section class="ch"><div class="ch-h"><div class="num">✓</div><h2>Quiz — Constitution de l'atome (/20)</h2><span class="sig">Pr Hicham MESBAH</span></div><div class="quiz" data-q="c1"></div></section>
+ <div class="pager"><a href="#accueil">← Accueil</a><a class="n" href="#symbole">Symbole du noyau →</a></div>
+</div>
+
+<!-- ======================= II. SYMBOLE ======================= -->
+<div class="chap" id="symbole">
+ <div class="chead"><div><div class="k">Partie II · Chimie TCS</div><h1>Représentation symbolique du noyau</h1></div><div class="s">✎ Pr Hicham MESBAH · TCS</div></div>
+ <section class="ch">
+  <div class="ch-h"><div class="num">1</div><h2>Le symbole <sup>A</sup><sub>Z</sub>X</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <div class="grid2">
+   <div class="box"><span class="tag">Notation</span><div class="f" style="font-size:44px;font-style:normal"><sup style="color:#d4862b">A</sup><sub style="color:#1f8a8a">Z</sub>X</div>
+    <p><b style="color:#d4862b">A</b> : <span class="rv">nombre de masse</span> ; <b style="color:#1f8a8a">Z</b> : <span class="rv">numéro atomique</span> ; X : symbole de l'élément.</p></div>
+   <div class="box"><span class="tag">Signification</span>
+    <ul>
+     <li>Z représente le nombre de <span class="rv">protons</span> ;</li>
+     <li>A représente le nombre de <span class="rv">nucléons</span> ;</li>
+     <li>nombre de neutrons : <b>N = <span class="rv">A − Z</span></b> ;</li>
+     <li>nombre d'électrons d'un atome neutre : <span class="rv">Z</span>.</li>
+    </ul></div>
+  </div>
+  <div class="note star"><b>Astuce :</b> la charge d'un ion ne modifie <b>que les électrons</b>. Pour X<sup>n+</sup> : Z − n électrons (il en a perdu n) ; pour X<sup>n−</sup> : Z + n électrons (il en a gagné n). Le noyau (Z, A, N) ne change jamais.</div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">2</div><h2>Application</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <div class="tw"><table class="t">
+   <tr><th>Entité</th><th>Z</th><th>A</th><th>Protons</th><th>Neutrons</th><th>Électrons</th></tr>
+   <tr><td><sup>23</sup><sub>11</sub>Na</td><td><span class="rv">11</span></td><td><span class="rv">23</span></td><td><span class="rv">11</span></td><td><span class="rv">12</span></td><td><span class="rv">11</span></td></tr>
+   <tr><td><sup>16</sup><sub>8</sub>O</td><td><span class="rv">8</span></td><td><span class="rv">16</span></td><td><span class="rv">8</span></td><td><span class="rv">8</span></td><td><span class="rv">8</span></td></tr>
+   <tr><td><sup>27</sup><sub>13</sub>Al<sup>3+</sup></td><td><span class="rv">13</span></td><td><span class="rv">27</span></td><td><span class="rv">13</span></td><td><span class="rv">14</span></td><td><span class="rv">10</span></td></tr>
+   <tr><td><sup>35</sup><sub>17</sub>Cl<sup>−</sup></td><td><span class="rv">17</span></td><td><span class="rv">35</span></td><td><span class="rv">17</span></td><td><span class="rv">18</span></td><td><span class="rv">18</span></td></tr>
+  </table></div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 4 :</i> Décoder un symbole — le noyau et les électrons se dessinent</b><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvSym"></canvas></div>
+   <div class="ctrl"><label>Entité <select id="symS"></select></label></div>
+  </div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Entraînement :</i> à toi de compléter !</b><button class="btn t sm" id="trNew">↻ Nouvelle entité</button></div>
+   <div class="eq" id="trBox"></div>
+  </div>
+ </section>
+ <section class="ch"><div class="ch-h"><div class="num">✓</div><h2>Quiz — Symbole du noyau (/20)</h2><span class="sig">Pr Hicham MESBAH</span></div><div class="quiz" data-q="c2"></div></section>
+ <div class="pager"><a href="#constitution">← Constitution</a><a class="n" href="#dimensions">Dimensions →</a></div>
+</div>
+
+<!-- ======================= III. DIMENSIONS ======================= -->
+<div class="chap" id="dimensions">
+ <div class="chead"><div><div class="k">Partie III · Chimie TCS</div><h1>Dimensions de l'atome</h1></div><div class="s">✎ Pr Hicham MESBAH · TCS</div></div>
+ <section class="ch">
+  <div class="ch-h"><div class="num">1</div><h2>Atome et noyau</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <ul>
+   <li>Rayon de l'atome : <b>r<sub>atome</sub> ≈ <span class="rv">10⁻¹⁰</span> m</b></li>
+   <li>Rayon du noyau : <b>r<sub>noyau</sub> ≈ <span class="rv">10⁻¹⁵</span> m</b></li>
+  </ul>
+  <div class="box"><span class="tag">Calcul</span><div class="f">r<sub>atome</sub> / r<sub>noyau</sub> = 10⁻¹⁰ / 10⁻¹⁵ = <span class="rv">10⁵</span></div>
+   <p>L'atome est donc environ <span class="rv">100 000</span> fois plus grand que son noyau. Si le noyau avait la taille d'une bille de 1 cm, l'atome aurait un rayon de <span class="rv">1 km</span>.</p></div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 5 :</i> Zoom de l'atome jusqu'au noyau</b><button class="btn t sm" id="zmGo">▶ Zoom automatique</button><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvZoom"></canvas></div>
+   <div class="ctrl"><label>Zoom <input type="range" id="zmS" min="0" max="5" step="0.01" value="0" style="width:220px"><b id="zmSv"></b></label></div>
+  </div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">2</div><h2>La structure lacunaire — l'expérience de Rutherford (1911)</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>Rutherford a bombardé une très fine feuille d'or avec des particules α (positives). Presque toutes traversent la feuille <b>sans être déviées</b> : l'atome est presque vide. Quelques-unes, qui passent très près d'un noyau, sont fortement déviées, voire renvoyées.</p>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 6 :</i> Bombardement d'une feuille d'or par des particules α</b><button class="btn t sm" id="ruGo">⏸ Pause</button><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvRu"></canvas></div>
+   <div class="ctrl"><label>Débit <input type="range" id="ruF" min="1" max="12" step="1" value="5"></label><button class="btn o sm" id="ruR">↺ Remettre les compteurs à zéro</button></div>
+   <div class="read" id="ruRead"></div>
+  </div>
+  <div class="box"><span class="tag">Conclusion</span><p>La matière a une structure <span class="rv">lacunaire</span> : entre le noyau et les électrons, il y a essentiellement du <span class="rv">vide</span>.</p></div>
+ </section>
+ <section class="ch"><div class="ch-h"><div class="num">✓</div><h2>Quiz — Dimensions de l'atome (/20)</h2><span class="sig">Pr Hicham MESBAH</span></div><div class="quiz" data-q="c3"></div></section>
+ <div class="pager"><a href="#symbole">← Symbole</a><a class="n" href="#element">Isotopes &amp; ions →</a></div>
+</div>
+
+<!-- ======================= IV. ELEMENT ======================= -->
+<div class="chap" id="element">
+ <div class="chead"><div><div class="k">Partie IV · Chimie TCS</div><h1>Élément chimique, isotopes et ions</h1></div><div class="s">✎ Pr Hicham MESBAH · TCS</div></div>
+ <section class="ch">
+  <div class="ch-h"><div class="num">1</div><h2>Élément chimique</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>Un élément chimique est l'ensemble des entités (atomes ou ions) qui ont le même <span class="rv">numéro atomique</span> Z. Au cours d'une transformation chimique, les éléments chimiques se <span class="rv">conservent</span>.</p>
+  <div class="ex"><b>Exemple :</b> Na, Na⁺, ²³Na appartiennent tous à l'élément <b>sodium</b> (Z = 11). Le cuivre métallique Cu et l'ion Cu²⁺ sont le même élément <b>cuivre</b> (Z = 29).</div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">2</div><h2>Les isotopes</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>Des isotopes sont des atomes qui ont le même nombre de <span class="rv">protons</span> mais des nombres de <span class="rv">neutrons</span> différents.</p>
+  <div class="tw"><table class="t">
+   <tr><th>Isotope</th><th><sup>12</sup><sub>6</sub>C</th><th><sup>13</sup><sub>6</sub>C</th><th><sup>14</sup><sub>6</sub>C</th></tr>
+   <tr><td>Protons</td><td><span class="rv">6</span></td><td><span class="rv">6</span></td><td><span class="rv">6</span></td></tr>
+   <tr><td>Neutrons</td><td><span class="rv">6</span></td><td><span class="rv">7</span></td><td><span class="rv">8</span></td></tr>
+   <tr><td>Électrons</td><td><span class="rv">6</span></td><td><span class="rv">6</span></td><td><span class="rv">6</span></td></tr>
+  </table></div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 7 :</i> Comparer des isotopes</b><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvIso"></canvas></div>
+   <div class="ctrl"><label>Élément <select id="isoS"><option value="0">Hydrogène : ¹H, ²H, ³H</option><option value="1" selected>Carbone : ¹²C, ¹³C, ¹⁴C</option><option value="2">Chlore : ³⁵Cl, ³⁷Cl</option><option value="3">Oxygène : ¹⁶O, ¹⁷O, ¹⁸O</option></select></label></div>
+  </div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">3</div><h2>Les ions monoatomiques</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <ul>
+   <li>Un atome qui perd un ou plusieurs électrons devient un ion <span class="rv">positif</span> appelé <span class="rv">cation</span>.</li>
+   <li>Un atome qui gagne un ou plusieurs électrons devient un ion <span class="rv">négatif</span> appelé <span class="rv">anion</span>.</li>
+  </ul>
+  <div class="ex"><b>Exemple :</b> l'atome de sodium Na perd <span class="rv">1</span> électron et devient l'ion <span class="rv">Na⁺</span> ; l'atome de chlore Cl gagne <span class="rv">1</span> électron et devient l'ion <span class="rv">Cl⁻</span>.</div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 8 :</i> Formation d'un ion</b><button class="btn t sm" id="ionGo">▶ Former l'ion</button><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvIon"></canvas></div>
+   <div class="ctrl"><label>Atome <select id="ionS"><option value="3">Lithium Li</option><option value="11" selected>Sodium Na</option><option value="12">Magnésium Mg</option><option value="13">Aluminium Al</option><option value="8">Oxygène O</option><option value="9">Fluor F</option><option value="16">Soufre S</option><option value="17">Chlore Cl</option></select></label></div>
+   <div class="read" id="ionRead"></div>
+  </div>
+  <div class="note star"><b>Astuce :</b> perdre des électrons (négatifs), c'est comme effacer des dettes : le « solde » devient <b>positif</b>. Gagner des électrons rend l'ion <b>négatif</b>.</div>
+ </section>
+ <section class="ch"><div class="ch-h"><div class="num">✓</div><h2>Quiz — Élément, isotopes et ions (/20)</h2><span class="sig">Pr Hicham MESBAH</span></div><div class="quiz" data-q="c4"></div></section>
+ <div class="pager"><a href="#dimensions">← Dimensions</a><a class="n" href="#repartition">Répartition électronique →</a></div>
+</div>
+
+<!-- ======================= V. REPARTITION ======================= -->
+<div class="chap" id="repartition">
+ <div class="chead"><div><div class="k">Partie V · Chimie TCS</div><h1>Répartition électronique (Z ≤ 18)</h1></div><div class="s">✎ Pr Hicham MESBAH · TCS</div></div>
+ <section class="ch">
+  <div class="ch-h"><div class="num">1</div><h2>Les couches électroniques</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>Les électrons se répartissent sur des couches notées K (n = 1), L (n = 2), M (n = 3)… Une couche de numéro n contient au maximum <span class="rv">2n²</span> électrons.</p>
+  <div class="tw"><table class="t">
+   <tr><th>Couche</th><th>K</th><th>L</th><th>M</th></tr>
+   <tr><td>n</td><td><span class="rv">1</span></td><td><span class="rv">2</span></td><td><span class="rv">3</span></td></tr>
+   <tr><td>Nombre maximal d'électrons</td><td><span class="rv">2</span></td><td><span class="rv">8</span></td><td><span class="rv">18</span></td></tr>
+  </table></div>
+  <div class="note">Pour Z ≤ 18 (programme du Tronc Commun), la couche M ne reçoit pas plus de <b>8</b> électrons.</div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">2</div><h2>Règles de remplissage</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <ul>
+   <li>Les couches se remplissent dans l'ordre : <span class="rv">K</span> → <span class="rv">L</span> → <span class="rv">M</span> ;</li>
+   <li>on ne commence à remplir une couche que si la précédente est <span class="rv">saturée</span> ;</li>
+   <li>la dernière couche occupée s'appelle la couche <span class="rv">externe</span> ; ses électrons sont les électrons <span class="rv">de valence</span>.</li>
+  </ul>
+  <div class="ex"><b>Exemple :</b> sodium Na (Z = 11) : formule électronique <b>(K)²(L)⁸(M)¹</b>.<br><b>À toi :</b> magnésium Mg (Z = 12) : <span class="rv">(K)²(L)⁸(M)²</span></div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Animation 9 :</i> Remplissage des couches électron par électron</b><button class="btn t sm" id="shGo">▶ Remplir</button><button class="btn o sm zoomb">⤢ Agrandir</button></div>
+   <div class="stage"><canvas id="cvSh"></canvas></div>
+   <div class="ctrl"><label>Z <input type="range" id="shZ" min="1" max="18" step="1" value="12" style="width:200px"><b id="shZv"></b></label></div>
+   <div class="read" id="shRead"></div>
+  </div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">3</div><h2>Application</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <div class="tw"><table class="t">
+   <tr><th>Atome</th><th>Z</th><th>Formule électronique</th><th>Couche externe</th><th>Électrons de valence</th></tr>
+   <tr><td>H</td><td>1</td><td><span class="rv">(K)¹</span></td><td><span class="rv">K</span></td><td><span class="rv">1</span></td></tr>
+   <tr><td>C</td><td>6</td><td><span class="rv">(K)²(L)⁴</span></td><td><span class="rv">L</span></td><td><span class="rv">4</span></td></tr>
+   <tr><td>O</td><td>8</td><td><span class="rv">(K)²(L)⁶</span></td><td><span class="rv">L</span></td><td><span class="rv">6</span></td></tr>
+   <tr><td>Cl</td><td>17</td><td><span class="rv">(K)²(L)⁸(M)⁷</span></td><td><span class="rv">M</span></td><td><span class="rv">7</span></td></tr>
+   <tr><td>Ar</td><td>18</td><td><span class="rv">(K)²(L)⁸(M)⁸</span></td><td><span class="rv">M</span></td><td><span class="rv">8</span></td></tr>
+  </table></div>
+  <div class="note star"><b>Méthode :</b> on distribue les Z électrons : 2 sur K, puis jusqu'à 8 sur L, puis le reste sur M. Vérifie que la somme des exposants est égale à Z.</div>
+ </section>
+ <section class="ch"><div class="ch-h"><div class="num">✓</div><h2>Quiz — Répartition électronique (/20)</h2><span class="sig">Pr Hicham MESBAH</span></div><div class="quiz" data-q="c5"></div></section>
+ <div class="pager"><a href="#element">← Isotopes &amp; ions</a><a class="n" href="#synthese">Synthèse →</a></div>
+</div>
+
+<!-- ======================= VI. SYNTHESE ======================= -->
+<div class="chap" id="synthese">
+ <div class="chead"><div><div class="k">Partie VI · Chimie TCS</div><h1>Exercice de synthèse</h1></div><div class="s">✎ Pr Hicham MESBAH · TCS</div></div>
+ <section class="ch">
+  <div class="ch-h"><div class="num">✎</div><h2>Énoncé</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <p>Le noyau d'un atome X porte une charge <b>q = 2,08 × 10⁻¹⁸ C</b> et contient <b>14 neutrons</b>.<br>Données : e = 1,6 × 10⁻¹⁹ C ; m<sub>p</sub> ≈ m<sub>n</sub> ≈ 1,67 × 10⁻²⁷ kg.</p>
+  <div class="ex"><b>1.</b> Calculer le numéro atomique Z de cet atome.
+   <details class="sol"><summary>Afficher la solution</summary><p>Le noyau contient Z protons de charge +e : q = Z·e, donc <b>Z = q/e = 2,08 × 10⁻¹⁸ / 1,6 × 10⁻¹⁹ = 13</b>.</p></details></div>
+  <div class="ex"><b>2.</b> En déduire le nombre de masse A et écrire le symbole du noyau (X = Al).
+   <details class="sol"><summary>Afficher la solution</summary><p><b>A = Z + N = 13 + 14 = 27</b> ; symbole : <b><sup>27</sup><sub>13</sub>Al</b>.</p></details></div>
+  <div class="ex"><b>3.</b> Calculer la masse approchée de l'atome. Justifier l'approximation.
+   <details class="sol"><summary>Afficher la solution</summary><p><b>m ≈ A × m<sub>p</sub> = 27 × 1,67 × 10⁻²⁷ ≈ 4,5 × 10⁻²⁶ kg</b>. On néglige la masse des électrons, environ 1840 fois plus faible que celle d'un nucléon.</p></details></div>
+  <div class="ex"><b>4.</b> Écrire la formule électronique de cet atome et donner son nombre d'électrons de valence.
+   <details class="sol"><summary>Afficher la solution</summary><p>13 électrons : <b>(K)²(L)⁸(M)³</b> ; couche externe M avec <b>3 électrons de valence</b>.</p></details></div>
+  <div class="ex"><b>5.</b> L'atome perd ses électrons de valence. Donner le symbole de l'ion formé et sa charge.
+   <details class="sol"><summary>Afficher la solution</summary><p>Il perd 3 électrons : ion <b>Al³⁺</b> ; <b>q′ = +3e = 3 × 1,6 × 10⁻¹⁹ = 4,8 × 10⁻¹⁹ C</b>.</p></details></div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">⚙</div><h2>Générateur d'exercices — même type, autres valeurs</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <div class="sim">
+   <div class="sim-h"><b><i>Entraînement :</i> un nouvel exercice à chaque clic</b><button class="btn t sm" id="gnNew">↻ Nouvel exercice</button><button class="btn o sm" id="gnSol">Afficher la correction</button></div>
+   <div class="eq" id="gnBox"></div>
+  </div>
+ </section>
+ <section class="ch">
+  <div class="ch-h"><div class="num">★</div><h2>Je retiens</h2><span class="sig">Pr Hicham MESBAH</span></div>
+  <div class="box"><span class="tag">L'essentiel</span>
+   <ul>
+    <li>L'atome = un noyau (Z protons + N neutrons) + Z électrons ; il est électriquement neutre.</li>
+    <li>Notation <sup>A</sup><sub>Z</sub>X : A = nombre de nucléons, Z = nombre de protons, N = A − Z.</li>
+    <li>Masse de l'atome ≈ masse du noyau ≈ A × m<sub>n</sub>.</li>
+    <li>Structure lacunaire : r<sub>atome</sub> ≈ 10⁻¹⁰ m, r<sub>noyau</sub> ≈ 10⁻¹⁵ m.</li>
+    <li>Isotopes : même Z, A différent. Un élément chimique est caractérisé par Z.</li>
+    <li>Répartition électronique : K (2), L (8), M (8 pour Z ≤ 18), dans l'ordre K → L → M.</li>
+   </ul></div>
+ </section>
+ <section class="ch"><div class="ch-h"><div class="num">✓</div><h2>Quiz final — tout le chapitre (/20)</h2><span class="sig">Pr Hicham MESBAH</span></div><div class="quiz" data-q="c6"></div></section>
+ <div class="pager"><a href="#repartition">← Répartition électronique</a><a class="n" href="#accueil">Accueil →</a></div>
+</div>
+</main>
+
+<footer>Cours interactif conçu par <b>Pr Hicham MESBAH</b> — Physique-Chimie · Tronc Commun Scientifique · Chimie : modèle de l'atome · Année scolaire 2026/2027</footer>
+<script>
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SIGN='Pr Hicham MESBAH';
+const fmt=(x,d=2)=>(Math.abs(x)<1e-12?0:x).toFixed(d).replace('.',',');
+function sci(x,d=2){if(x===0)return'0';const e=Math.floor(Math.log10(Math.abs(x)));const m=x/Math.pow(10,e);const sup={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};return fmt(m,d)+'×10'+String(e).split('').map(c=>sup[c]).join('')}
+
+/* ---------- Navigation par chapitre ---------- */
+const CH=['accueil','constitution','symbole','dimensions','element','repartition','synthese'];
+const SIMS={};function reg(ch,f){(SIMS[ch]=SIMS[ch]||[]).push(f)}
+function curCh(){const h=location.hash.slice(1);return CH.includes(h)?h:'accueil'}
+function show(){const id=curCh();$$('.chap').forEach(c=>c.classList.toggle('on',c.id===id));$$('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+id));window.scrollTo(0,0);requestAnimationFrame(()=>redraw(id))}
+function redraw(id){(SIMS[id||curCh()]||[]).forEach(f=>{try{f()}catch(e){console.error(e)}})}
+window.addEventListener('hashchange',show);
+$$('.rv').forEach(e=>e.addEventListener('click',()=>e.classList.toggle('on')));
+let allOn=false;
+$('#revealAll').onclick=()=>{allOn=!allOn;$$('.rv').forEach(e=>e.classList.toggle('on',allOn));$('#revealAll').textContent=allOn?'✦ Tout masquer':'✦ Tout révéler'};
+$('#fs').onclick=()=>{try{const d=document,el=d.documentElement;if(!d.fullscreenElement){const p=(el.requestFullscreen||el.webkitRequestFullscreen).call(el);if(p&&p.catch)p.catch(()=>{})}else d.exitFullscreen()}catch(e){}};
+window.addEventListener('scroll',()=>{const h=document.documentElement;$('#prog').style.width=(100*h.scrollTop/Math.max(1,h.scrollHeight-h.clientHeight))+'%'},{passive:true});
+$$('.zoomb').forEach(b=>b.onclick=()=>{const s=b.closest('.sim');const z=s.classList.toggle('zoom');b.textContent=z?'✕ Réduire':'⤢ Agrandir';document.body.style.overflow=z?'hidden':'';redraw()});
+window.addEventListener('resize',()=>{clearTimeout(window._rt);window._rt=setTimeout(()=>redraw(),120)});
+
+/* ---------- Outils de dessin ---------- */
+const DPR=Math.min(window.devicePixelRatio||1,2);
+function fit(cv,r,rn){const w=cv.parentElement.clientWidth||600;const ratio=w<640?(rn||r*1.4):r;const h=Math.round(w*ratio);if(cv._w!==w||cv._h!==h){cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);cv.style.height=h+'px';cv._w=w;cv._h=h}const ctx=cv.getContext('2d');ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,w,h);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.setLineDash([]);ctx.globalAlpha=1;ctx.lineCap='butt';return{ctx,W:w,H:h}}
+function sig(ctx,W,H,light){ctx.save();ctx.font="italic 600 12px Fraunces, serif";ctx.fillStyle=light?'rgba(255,255,255,.6)':'rgba(109,75,176,.65)';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText('✎ '+SIGN,W-8,H-5);ctx.restore()}
+function txt(ctx,s,x,y,o){o=o||{};ctx.save();ctx.font=o.font||"14px 'Source Serif 4', serif";ctx.fillStyle=o.c||'#1b2340';ctx.textAlign=o.a||'left';ctx.textBaseline=o.b||'alphabetic';if(o.alpha!=null)ctx.globalAlpha=o.alpha;ctx.fillText(s,x,y);ctx.restore()}
+function arrow(ctx,x1,y1,x2,y2,col,w,h){w=w||2;h=h||9;ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=w;const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-h*.6*Math.cos(a),y2-h*.6*Math.sin(a));ctx.stroke();ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.42),y2-h*Math.sin(a-.42));ctx.lineTo(x2-h*Math.cos(a+.42),y2-h*Math.sin(a+.42));ctx.closePath();ctx.fill();ctx.restore()}
+function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
+function live(cv,frame){let vis=false,last=0,run=false;new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis&&!run){run=true;last=performance.now();requestAnimationFrame(loop)}}).observe(cv);function loop(now){if(!vis){run=false;return}const dt=Math.min(.05,(now-last)/1000);last=now;try{frame(dt,now)}catch(e){console.error(e);run=false;return}requestAnimationFrame(loop)}}
+/* oscilloscope */
+function scope(ctx,x,y,w,h,o){ctx.save();rrect(ctx,x,y,w,h,8);ctx.fillStyle='#0f1b2d';ctx.fill();ctx.clip();
+ const nx=o.nx||10,ny=o.ny||8;ctx.strokeStyle='rgba(127,209,196,.15)';ctx.lineWidth=1;
+ for(let i=1;i<nx;i++){const px=x+i*w/nx;ctx.beginPath();ctx.moveTo(px,y);ctx.lineTo(px,y+h);ctx.stroke()}
+ for(let j=1;j<ny;j++){const py=y+j*h/ny;ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x+w,py);ctx.stroke()}
+ const X=t=>x+(t-o.t0)/(o.t1-o.t0)*w,Y=v=>y+h-(v-o.y0)/(o.y1-o.y0)*h;
+ if(o.y0<0&&o.y1>0){ctx.strokeStyle='rgba(127,209,196,.4)';ctx.beginPath();ctx.moveTo(x,Y(0));ctx.lineTo(x+w,Y(0));ctx.stroke()}
+ if(o.pre)o.pre(ctx,X,Y);
+ (o.tr||[]).forEach(tr=>{if(!tr.pts||tr.pts.length<2)return;ctx.strokeStyle=tr.c;ctx.lineWidth=tr.w||2;ctx.setLineDash(tr.dash||[]);ctx.beginPath();tr.pts.forEach((p,i)=>{const px=X(p[0]),py=Y(p[1]);i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.stroke();ctx.setLineDash([])});
+ if(o.post)o.post(ctx,X,Y);
+ let lx=x+8;ctx.font="700 12px Fraunces, serif";ctx.textAlign='left';ctx.textBaseline='alphabetic';(o.tr||[]).forEach(tr=>{if(tr.lab){ctx.fillStyle=tr.c;ctx.fillText(tr.lab,lx,y+16);lx+=ctx.measureText(tr.lab).width+14}});
+ if(o.title){ctx.fillStyle='#e8eef7';ctx.textAlign='right';ctx.fillText(o.title,x+w-8,y+16);ctx.textAlign='left'}
+ if(o.foot){ctx.font="11px 'JetBrains Mono', monospace";ctx.fillStyle='#8fa6bf';ctx.textAlign='right';ctx.fillText(o.foot,x+w-8,y+h-7)}
+ ctx.restore();return{X,Y}}
+function sample(fn,t0,t1,n){const a=[];for(let k=0;k<=n;k++){const t=t0+(t1-t0)*k/n;a.push([t,fn(t)])}return a}
+/* circuits */
+function wires(ctx,segs){ctx.save();ctx.strokeStyle='#1b2340';ctx.lineWidth=2.2;ctx.lineJoin='round';segs.forEach(p=>{ctx.beginPath();p.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke()});ctx.restore()}
+function comp(ctx,type,x,y,ang,o){o=o||{};ctx.save();ctx.translate(x,y);ctx.rotate(ang||0);ctx.lineWidth=2.2;ctx.strokeStyle='#1b2340';ctx.fillStyle='#fff';
+ if(type==='R'){ctx.fillRect(-24,-9,48,18);ctx.strokeRect(-24,-9,48,18)}
+ else if(type==='C'){ctx.fillRect(-8,-20,16,40);ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(-5,-17);ctx.lineTo(-5,17);ctx.moveTo(5,-17);ctx.lineTo(5,17);ctx.stroke();
+  const q=o.q||0,n=Math.round(Math.min(1,Math.abs(q))*5);ctx.font="700 11px sans-serif";ctx.textAlign='center';ctx.textBaseline='middle';for(let k=0;k<n;k++){const yy=-14+k*7;ctx.fillStyle=q>0?'#d62839':'#2f5fa7';ctx.fillText(q>0?'+':'−',-12,yy);ctx.fillStyle=q>0?'#2f5fa7':'#d62839';ctx.fillText(q>0?'−':'+',12,yy)}}
+ else if(type==='L'){ctx.fillRect(-29,-13,58,26);ctx.beginPath();ctx.moveTo(-29,0);for(let k=0;k<4;k++){ctx.arc(-21+14*k,0,7,Math.PI,0,false)}ctx.lineTo(29,0);ctx.stroke()}
+ else if(type==='G'){ctx.beginPath();ctx.arc(0,0,15,0,7);ctx.fill();ctx.stroke();if(o.ac){ctx.beginPath();for(let s=-9;s<=9;s++){const yy=-5*Math.sin(s/9*Math.PI);s===-9?ctx.moveTo(s,yy):ctx.lineTo(s,yy)}ctx.stroke()}else{ctx.beginPath();ctx.moveTo(-15,0);ctx.lineTo(15,0);ctx.stroke()}}
+ else if(type==='D'){ctx.fillRect(-12,-11,24,22);ctx.fillStyle='#1b2340';ctx.beginPath();ctx.moveTo(-7,-8);ctx.lineTo(-7,8);ctx.lineTo(6,0);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(6,-8);ctx.lineTo(6,8);ctx.stroke()}
+ else if(type==='lamp'){const b=o.b||0;if(b>0.02){const g=ctx.createRadialGradient(0,0,4,0,0,38);g.addColorStop(0,`rgba(255,225,90,${.9*b})`);g.addColorStop(1,'rgba(255,200,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,38,0,7);ctx.fill()}ctx.fillStyle=b>0.02?`rgb(255,${Math.round(250-60*b)},${Math.round(200-170*b)})`:'#fff';ctx.beginPath();ctx.arc(0,0,13,0,7);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(-9,-9);ctx.lineTo(9,9);ctx.moveTo(9,-9);ctx.lineTo(-9,9);ctx.stroke()}
+ else if(type==='box'){ctx.fillRect(-26,-13,52,26);ctx.strokeStyle='#6d4bb0';ctx.strokeRect(-26,-13,52,26);ctx.rotate(-(ang||0));ctx.fillStyle='#6d4bb0';ctx.font="700 11px Fraunces, serif";ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.t||'',0,1)}
+ ctx.restore();
+ if(o.lab)txt(ctx,o.lab,x+(o.lx||0),y+(o.ly||0),{a:'center',b:'middle',font:"700 14px Fraunces, serif",c:o.lc||'#1b2340'})}
+function plen(pts){const P=pts.concat([pts[0]]);const seg=[];let L=0;for(let i=0;i<P.length-1;i++){const l=Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1]);seg.push(l);L+=l}return{P,seg,L}}
+function pAt(pl,s){s=((s%pl.L)+pl.L)%pl.L;for(let i=0;i<pl.seg.length;i++){if(s<=pl.seg[i]){const k=s/pl.seg[i]||0;return[pl.P[i][0]+(pl.P[i+1][0]-pl.P[i][0])*k,pl.P[i][1]+(pl.P[i+1][1]-pl.P[i][1])*k]}s-=pl.seg[i]}return pl.P[0]}
+function flow(ctx,pts,phase,alpha){const pl=plen(pts),sp=20,n=Math.floor(pl.L/sp);ctx.save();ctx.globalAlpha=alpha==null?1:alpha;ctx.fillStyle='#f2a541';for(let k=0;k<n;k++){const p=pAt(pl,k*sp+phase);ctx.beginPath();ctx.arc(p[0],p[1],3.2,0,7);ctx.fill()}ctx.restore()}
+function vArrow(ctx,x,y1,y2,lab,col){arrow(ctx,x,y1,x,y2,col||'#6d4bb0',1.6,8);txt(ctx,lab,x+6,(y1+y2)/2+4,{font:"italic 700 13px Fraunces, serif",c:col||'#6d4bb0'})}
+function bars(ctx,x,y,w,items,tot){const bh=14,gap=8;items.forEach((it,k)=>{const yy=y+k*(bh+gap);txt(ctx,it[0],x,yy+11,{font:"700 12px Fraunces, serif",c:it[2]});const bx=x+34,bw=w-34;ctx.fillStyle='#eeeaf8';ctx.fillRect(bx,yy,bw,bh);ctx.fillStyle=it[2];ctx.fillRect(bx,yy,bw*Math.max(0,Math.min(1,it[1]/tot)),bh)})}
+
+function rng(s){s=Math.max(1,Math.floor(s))%2147483647;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+function onceVisible(el,cb){const o=new IntersectionObserver(es=>{es.forEach(x=>{if(x.isIntersecting){cb();o.disconnect()}})},{threshold:.35});o.observe(el)}
+/* ================= Outils atome ================= */
+const EL=[null,['H','Hydrogène',1],['He','Hélium',4],['Li','Lithium',7],['Be','Béryllium',9],['B','Bore',11],['C','Carbone',12],['N','Azote',14],['O','Oxygène',16],['F','Fluor',19],['Ne','Néon',20],['Na','Sodium',23],['Mg','Magnésium',24],['Al','Aluminium',27],['Si','Silicium',28],['P','Phosphore',31],['S','Soufre',32],['Cl','Chlore',35],['Ar','Argon',40]];
+const C_P='#d62839',C_N='#8a8f99',C_E='#2f5fa7',C_V='#6d4bb0',C_A='#d4862b',C_T='#1f8a8a',C_K='#1b2340';
+const SUPC={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','-':'⁻'};
+const sup=s=>String(s).split('').map(c=>SUPC[c]||c).join('');
+function shellsOf(e){const s=[0,0,0];let r=e;s[0]=Math.min(2,r);r-=s[0];s[1]=Math.min(8,r);r-=s[1];s[2]=Math.min(8,r);return s}
+function formula(e){const s=shellsOf(e);let f='';['K','L','M'].forEach((n,i)=>{if(s[i])f+='('+n+')'+sup(s[i])});return f||'—'}
+function chargeTxt(q){return q===0?'':(Math.abs(q)>1?Math.abs(q):'')+(q>0?'+':'−')}
+function nucleus(ctx,cx,cy,p,n,R,seed){const tot=p+n;if(!tot)return;const r=rng(seed||7);const kinds=[];for(let i=0;i<p;i++)kinds.push(1);for(let i=0;i<n;i++)kinds.push(0);
+ for(let i=kinds.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[kinds[i],kinds[j]]=[kinds[j],kinds[i]]}
+ const br=R*Math.min(.5,1.15/Math.sqrt(tot));
+ const pts=kinds.map((q,k)=>{const rr=(R-br)*Math.sqrt((k+.5)/tot),a=k*2.39996;return[cx+rr*Math.cos(a),cy+rr*Math.sin(a),q]});
+ pts.sort((a,b)=>a[1]-b[1]);
+ pts.forEach(([x,y,q])=>{const g=ctx.createRadialGradient(x-br*.35,y-br*.35,br*.1,x,y,br);g.addColorStop(0,q?'#ff8a8a':'#d5d8de');g.addColorStop(1,q?C_P:C_N);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,br,0,7);ctx.fill();
+  if(q&&br>5)txt(ctx,'+',x,y+.5,{a:'center',b:'middle',font:`700 ${Math.round(br*1.3)}px sans-serif`,c:'#fff'})})}
+function elec(ctx,x,y,r,a){ctx.save();if(a!=null)ctx.globalAlpha=a;const g=ctx.createRadialGradient(x-r*.3,y-r*.3,r*.1,x,y,r);g.addColorStop(0,'#8fb8f0');g.addColorStop(1,C_E);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+ if(r>5)txt(ctx,'−',x,y+.5,{a:'center',b:'middle',font:`700 ${Math.round(r*1.5)}px sans-serif`,c:'#fff'});ctx.restore()}
+/* atome de Bohr : couches K, L, M */
+function bohr(ctx,cx,cy,R,p,n,e,o){o=o||{};const s=shellsOf(e),rad=[R*.42,R*.7,R*.98];const nR=R*.24;
+ for(let i=0;i<3;i++){if(i>0&&!s[i]&&!o.allShells)continue;ctx.save();ctx.strokeStyle=o.light?'rgba(255,255,255,.35)':'rgba(27,35,64,.25)';ctx.setLineDash([4,4]);ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(cx,cy,rad[i],0,7);ctx.stroke();ctx.restore();
+  if(o.labels!==false)txt(ctx,'KLM'[i],cx+rad[i]*.72+4,cy-rad[i]*.72-2,{font:"700 12px Fraunces, serif",c:o.light?'#cfe8e4':C_V})}
+ nucleus(ctx,cx,cy,p,n,nR,o.seed);
+ const rot=o.rot||0,er=Math.max(4,R*.055);
+ for(let i=0;i<3;i++)for(let k=0;k<s[i];k++){const a=2*Math.PI*k/s[i]+rot*(1-.25*i)+i*.4;elec(ctx,cx+rad[i]*Math.cos(a),cy+rad[i]*Math.sin(a),er)}}
+function symb(ctx,x,y,A,Z,X,q,size){size=size||40;const f=`700 ${size}px Fraunces, serif`,fs=`700 ${Math.round(size*.48)}px Fraunces, serif`;
+ txt(ctx,X,x,y,{font:f,c:C_K});ctx.save();ctx.font=f;const w=ctx.measureText(X).width;ctx.restore();
+ txt(ctx,A,x-4,y-size*.55,{font:fs,c:C_A,a:'right'});txt(ctx,Z,x-4,y+size*.08,{font:fs,c:C_T,a:'right'});
+ if(q)txt(ctx,chargeTxt(q),x+w+3,y-size*.55,{font:fs,c:q>0?C_P:C_E})}
+
+/* ---------- Héros ---------- */
+(function(){const cv=$('#cvHero');live(cv,(dt,now)=>{const {ctx,W,H}=fit(cv,.62,.62);const cx=W/2,cy=H/2,R=Math.min(W,H)*.42,t=now/1000;
+ for(let i=0;i<3;i++){ctx.save();ctx.translate(cx,cy);ctx.rotate(i*Math.PI/3+t*.05);ctx.strokeStyle='rgba(242,165,65,.55)';ctx.lineWidth=1.6;ctx.beginPath();ctx.ellipse(0,0,R,R*.36,0,0,7);ctx.stroke();
+  const a=t*(1.2+.3*i)+i*2;elec(ctx,R*Math.cos(a),R*.36*Math.sin(a),7);ctx.restore()}
+ nucleus(ctx,cx,cy,6,6,R*.2,3);txt(ctx,'¹²₆C',W-14,24,{a:'right',font:"700 18px Fraunces, serif",c:'#ffd9a0'});sig(ctx,W,H,true)})})();
+
+/* ---------- I : lithium ---------- */
+(function(){const cv=$('#cvLi');let t=0;const r=rng(11);const start=[...Array(7)].map(()=>[r()*2-1,r()*2-1]);
+ function draw(){const {ctx,W,H}=fit(cv,.5,.8);const nw=W<640;const cx=nw?W*.36:W*.42,cy=H/2+(nw?10:0),R=nw?Math.min(W*.3,H*.4):Math.min(W*.36,H*.44),g=ease(t/2.5),lab=$('#liLab').checked;const LX=nw?W*.64:W*.78,LF=nw?'700 12px Fraunces, serif':'700 14px Fraunces, serif';
+  const kinds=[1,0,1,0,1,0,0],nr=R*.2;
+  // nucleons assemble
+  const br=nr*.42;kinds.forEach((q,k)=>{const rr=(nr-br)*Math.sqrt((k+.5)/7),a=k*2.39996;const ex=cx+rr*Math.cos(a),ey=cy+rr*Math.sin(a);const sx=cx+start[k][0]*W*.4,sy=cy+start[k][1]*H*.4;
+   const x=sx+(ex-sx)*g,y=sy+(ey-sy)*g;const gr=ctx.createRadialGradient(x-br*.3,y-br*.3,1,x,y,br);gr.addColorStop(0,q?'#ff8a8a':'#d5d8de');gr.addColorStop(1,q?C_P:C_N);ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,br,0,7);ctx.fill();if(q)txt(ctx,'+',x,y+.5,{a:'center',b:'middle',font:`700 ${Math.round(br*1.3)}px sans-serif`,c:'#fff'})});
+  const al=ease((t-2.4)/1);let e0=null;
+  for(let i=0;i<3;i++){ctx.save();ctx.globalAlpha=al;ctx.translate(cx,cy);ctx.rotate(i*Math.PI/3);ctx.strokeStyle='rgba(212,134,43,.6)';ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(0,0,R,R*.34,0,0,7);ctx.stroke();
+   const a=(t-2.4)*1.3*(+$('#liV').value)+i*2.1;const x=R*Math.cos(a),y=R*.34*Math.sin(a);elec(ctx,x,y,8);ctx.restore();
+   if(i===0)e0=[cx+x,cy+y]}
+  if(lab&&t>3.5){ctx.save();ctx.globalAlpha=ease((t-3.5)/.6);
+   arrow(ctx,LX,H*.2,cx+nr*.6,cy-nr*.4,C_K,1.4,8);txt(ctx,'noyau',LX+4,H*.2-4,{font:LF});
+   arrow(ctx,LX,H*.42,cx+nr*.2,cy+2,C_P,1.4,8);txt(ctx,'proton (+e)',LX+4,H*.42+4,{font:LF,c:C_P});
+   arrow(ctx,LX,H*.58,cx-nr*.2,cy+nr*.5,C_N,1.4,8);txt(ctx,'neutron (0)',LX+4,H*.58+4,{font:LF,c:'#5d6475'});
+   arrow(ctx,LX,H*.8,e0[0]+6,e0[1]+6,C_E,1.4,8);txt(ctx,'électron (−e)',LX+4,H*.8+4,{font:LF,c:C_E});ctx.restore()}
+  txt(ctx,nw?'Li : 3 p + 4 n, 3 e⁻':'Lithium : 3 p + 4 n = 7 nucléons, 3 électrons',12,22,{font:"700 14px Fraunces, serif",c:C_V});sig(ctx,W,H)}
+ $('#liGo').onclick=()=>{t=0};$('#liLab').onchange=draw;live(cv,dt=>{t+=dt;draw()});reg('constitution',draw)})();
+
+/* ---------- I : balance proton / électrons ---------- */
+(function(){const cv=$('#cvBal');let n=0,run=false;const RATIO=1840;
+ function draw(){const {ctx,W,H}=fit(cv,.46,.75);const cx=W/2,py=H*.3,L=W<640?W*.31:Math.min(W*.36,260);
+  const diff=(1-n/RATIO);const ang=Math.max(-.22,Math.min(.22,diff*.22));
+  ctx.fillStyle='#5d6475';ctx.fillRect(cx-5,py,10,H*.6);ctx.fillRect(cx-60,H*.9,120,8);
+  ctx.save();ctx.translate(cx,py);ctx.rotate(-ang);ctx.strokeStyle=C_K;ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-L,0);ctx.lineTo(L,0);ctx.stroke();ctx.restore();
+  const lx=cx-L*Math.cos(ang),ly=py+L*Math.sin(ang),rx=cx+L*Math.cos(ang),ry=py-L*Math.sin(ang);
+  const ph=H*.36,pw=W<640?W*.2:Math.min(150,W*.26);
+  [[lx,ly],[rx,ry]].forEach(([x,y])=>{ctx.strokeStyle='#5d6475';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-pw/2,y+ph);ctx.moveTo(x,y);ctx.lineTo(x+pw/2,y+ph);ctx.stroke();ctx.fillStyle='#c9ced6';ctx.beginPath();ctx.ellipse(x,y+ph,pw/2,9,0,0,7);ctx.fill()});
+  nucleus(ctx,lx,ly+ph-16,1,0,14,1);txt(ctx,'1 proton',lx,ly+ph+28,{a:'center',font:"700 14px Fraunces, serif",c:C_P});
+  // electrons heap
+  const cols=46,dr=Math.max(1.2,pw/cols/2.2);for(let k=0;k<Math.min(n,1840);k++){const c=k%cols,row=Math.floor(k/cols);ctx.fillStyle=C_E;ctx.fillRect(rx-pw*.42+c*(pw*.84/cols),ry+ph-6-row*dr*1.6,dr*1.4,dr*1.2)}
+  txt(ctx,Math.round(n)+' électrons',rx,ry+ph+28,{a:'center',font:"700 14px Fraunces, serif",c:C_E});
+  if(n>=RATIO-1)txt(ctx,'Équilibre : 1 proton ≈ 1840 électrons !',cx,24,{a:'center',font:"700 16px Fraunces, serif",c:C_V});
+  $('#balRead').innerHTML=`<span>m(électrons) = <b>${sci(n*9.1e-31,2)} kg</b></span><span>m(proton) = <b>1,67×10⁻²⁷ kg</b></span><span>rapport = <b>${Math.round(n)}</b> / 1840</span>`;sig(ctx,W,H)}
+ $('#balGo').onclick=()=>{n=0;run=true};live(cv,dt=>{if(run){n=Math.min(RATIO,n+dt*(30+n*.9));if(n>=RATIO)run=false}draw()});reg('constitution',draw);onceVisible(cv,()=>{n=0;run=true})})();
+
+/* ---------- I : construis ton atome ---------- */
+(function(){const cv=$('#cvBuild');let rot=0;
+ function draw(){const {ctx,W,H}=fit(cv,.52,.95);const p=+$('#bP').value,nn=+$('#bN').value,e=+$('#bE').value;$('#bPv').textContent=p;$('#bNv').textContent=nn;$('#bEv').textContent=e;
+  const narrow=W<640;const cx=narrow?W/2:W*.34,cy=narrow?H*.36:H/2,R=narrow?Math.min(W*.4,H*.32):Math.min(W*.3,H*.45);
+  bohr(ctx,cx,cy,R,p,nn,e,{rot,seed:p*31+nn});
+  const el=EL[p],A=p+nn,q=p-e;const bx=narrow?W*.5:W*.72,by=narrow?H*.8:H*.38;
+  symb(ctx,bx,by,A,p,el[0],q,narrow?40:54);
+  txt(ctx,el[1],bx+20,by+(narrow?34:44),{a:'center',font:"700 18px Fraunces, serif",c:C_V});
+  const kind=q===0?'atome neutre':q>0?'cation (ion positif)':'anion (ion négatif)';
+  txt(ctx,kind,bx+20,by+(narrow?58:72),{a:'center',font:"700 16px Fraunces, serif",c:q===0?C_T:q>0?C_P:C_E});
+  if(nn!==el[2]-p)txt(ctx,'(isotope courant : A = '+el[2]+')',bx+20,by+(narrow?78:96),{a:'center',font:"13px 'Source Serif 4', serif",c:'#5d6475'});
+  const m=p*1.673e-27+nn*1.675e-27+e*9.1e-31;
+  $('#bRead').innerHTML=`<span>Z = <b>${p}</b></span><span>A = <b>${A}</b></span><span>N = A − Z = <b>${nn}</b></span><span>charge = <b>${q===0?'0':(q>0?'+':'−')+(Math.abs(q)>1?Math.abs(q):'')+'e'}</b></span><span>masse ≈ <b>${sci(m,2)} kg</b></span><span>${formula(e)}</span>`;sig(ctx,W,H)}
+ ['#bP','#bN','#bE'].forEach(s=>$(s).oninput=draw);live(cv,dt=>{rot+=dt*.5;draw()});reg('constitution',draw)})();
+
+/* ---------- II : décoder un symbole ---------- */
+const ENT=[[23,11,0],[16,8,0],[27,13,3],[35,17,-1],[1,1,0],[12,6,0],[14,7,0],[19,9,0],[24,12,2],[32,16,-2],[40,18,0],[7,3,1],[37,17,-1]];
+(function(){const cv=$('#cvSym'),S=$('#symS');let t=0,rot=0;
+ ENT.forEach((x,i)=>{const o=document.createElement('option');o.value=i;o.textContent=sup(x[0])+EL[x[1]][0]+(x[2]?sup(chargeTxt(x[2]).replace('−','-')):'')+'  (Z = '+x[1]+')';S.appendChild(o)});
+ function draw(){const {ctx,W,H}=fit(cv,.5,1.2);const [A,Z,q]=ENT[+S.value],N=A-Z,e=Z-q,narrow=W<640;
+  const sx=narrow?W*.3:W*.2,sy=narrow?H*.17:H*.42;symb(ctx,sx,sy,A,Z,EL[Z][0],q,narrow?44:64);
+  const lines=[['Z = '+Z+' → '+Z+' protons',C_T],['A = '+A+' → '+A+' nucléons',C_A],['N = A − Z = '+A+' − '+Z+' = '+N+' neutrons','#5d6475'],[(q===0?'atome neutre : ':q>0?'perd '+q+' e⁻ : ':'gagne '+(-q)+' e⁻ : ')+Z+(q>0?' − '+q:q<0?' + '+(-q):'')+' = '+e+' électrons',C_E]];
+  lines.forEach((l,k)=>{const a=ease((t-k*.8)/.5);if(a>0)txt(ctx,l[0],narrow?14:24,(narrow?H*.32:H*.6)+k*22,{font:"700 15px Fraunces, serif",c:l[1],alpha:a})});
+  const cx=narrow?W/2:W*.7,cy=narrow?H*.76:H/2,R=narrow?Math.min(W*.38,H*.2):Math.min(W*.27,H*.45);
+  bohr(ctx,cx,cy,R,Z,N,Math.round(e*ease((t-1.5)/1.5)),{rot,seed:A});sig(ctx,W,H)}
+ S.onchange=()=>{t=0};live(cv,dt=>{t+=dt;rot+=dt*.4;draw()});reg('symbole',draw)})();
+(function(){const B=$('#trBox');let cur;
+ function nw(){cur=ENT[Math.floor(Math.random()*ENT.length)];const [A,Z,q]=cur;
+  B.innerHTML=`<p style="margin:0 0 8px">Entité : <b style="font-size:22px"><sup>${A}</sup><sub>${Z}</sub>${EL[Z][0]}${q?'<sup>'+chargeTxt(q)+'</sup>':''}</b></p>
+  <label>Protons <input id="trP" type="number" style="width:60px"></label> &nbsp; <label>Neutrons <input id="trN" type="number" style="width:60px"></label> &nbsp; <label>Électrons <input id="trE" type="number" style="width:60px"></label> &nbsp; <button class="btn sm" id="trOk">Vérifier</button><div id="trRes" style="margin-top:8px"></div>`;
+  $('#trOk').onclick=()=>{const [A,Z,q]=cur,ok=[+$('#trP').value===Z,+$('#trN').value===A-Z,+$('#trE').value===Z-q];
+   $('#trRes').innerHTML=ok.every(x=>x)?'<b style="color:#1f8a5a">✔ Bravo, tout est juste !</b>':`<b style="color:#c22a37">✘ À corriger :</b> protons = Z = ${Z} ; neutrons = A − Z = ${A-Z} ; électrons = ${Z}${q>0?' − '+q:q<0?' + '+(-q):''} = ${Z-q}.`}}
+ $('#trNew').onclick=nw;nw()})();
+
+/* ---------- III : zoom ---------- */
+(function(){const cv=$('#cvZoom'),S=$('#zmS');let auto=false;const r=rng(5);const cloud=[...Array(240)].map(()=>{const a=r()*7,d=Math.sqrt(r())*.95;return[d*Math.cos(a),d*Math.sin(a)]});
+ function draw(){const {ctx,W,H}=fit(cv,.5,.85);const e=+S.value,s=Math.pow(10,e);const cx=W/2,cy=H/2,R0=Math.min(W,H)*.4,Ra=R0*s,Rn=Ra*1e-5;
+  ctx.fillStyle='#0f1b2d';ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.strokeStyle='rgba(242,165,65,.8)';ctx.setLineDash([6,5]);ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,Ra,0,7);ctx.stroke();ctx.restore();
+  if(s<60)cloud.forEach(p=>{ctx.fillStyle=`rgba(120,170,255,${.5*(1-e/1.8)})`;ctx.fillRect(cx+p[0]*Ra,cy+p[1]*Ra,2,2)});
+  if(Rn<3){ctx.fillStyle='#ff6b6b';ctx.beginPath();ctx.arc(cx,cy,Math.max(Rn,1.3),0,7);ctx.fill();const lx=W<640?cx+30:cx+70;arrow(ctx,lx,cy-60,cx+4,cy-4,'#ffd166',1.6,8);txt(ctx,'le noyau est ici !',lx+4,cy-64,{font:"700 14px Fraunces, serif",c:'#ffd166'})}
+  else nucleus(ctx,cx,cy,6,6,Rn,4);
+  const width=2*1e-10*(W/2/R0)/s;
+  txt(ctx,'zoom × '+Math.round(s).toLocaleString('fr-FR'),12,24,{font:"700 16px Fraunces, serif",c:'#e8eef7'});
+  txt(ctx,'largeur de l\'écran ≈ '+sci(width,0).replace(/^1×/,'')+' m',12,46,{font:"14px 'JetBrains Mono', monospace",c:'#7fd1c4'});
+  txt(ctx,e<0.3?'L\'atome : rayon ≈ 10⁻¹⁰ m':e>4.7?'Le noyau : rayon ≈ 10⁻¹⁵ m — 100 000 fois plus petit !':'On zoome… entre les deux : du vide',W/2,H-16,{a:'center',font:"700 15px Fraunces, serif",c:'#ffd9a0'});
+  $('#zmSv').textContent='×'+Math.round(s).toLocaleString('fr-FR');sig(ctx,W,H,true)}
+ S.oninput=()=>{auto=false;draw()};$('#zmGo').onclick=()=>{S.value=0;auto=true};
+ live(cv,dt=>{if(auto){S.value=Math.min(5,+S.value+dt*.6);if(+S.value>=5)auto=false}draw()});reg('dimensions',draw)})();
+
+/* ---------- III : Rutherford ---------- */
+(function(){const cv=$('#cvRu');let P=[],run=true,acc=0,cnt=[0,0,0],nuc=[];
+ function setup(W,H){nuc=[];const fx=W*.55;for(let j=0;j<16;j++)for(let i=0;i<3;i++)nuc.push([fx+i*7,H*.12+j*(H*.76/15)+(i%2)*H*.76/30])}
+ function emit(W,H){const y=H*.12+Math.random()*H*.76;/* paramètre d'impact aléatoire */P.push({x:60,y,vx:240,vy:0,done:false,trail:[]})}
+ function step(dt,W,H){const fx=W*.55;P.forEach(p=>{const ox=p.x;p.x+=p.vx*dt;p.y+=p.vy*dt;p.trail.push([p.x,p.y]);if(p.trail.length>40)p.trail.shift();
+   if(!p.done&&ox<fx&&p.x>=fx){p.done=true;let best=null,bd=1e9;nuc.forEach(n=>{const d=Math.abs(n[1]-p.y);if(d<bd){bd=d;best=n}});
+    const b=bd,th=2*Math.atan(0.08/Math.max(b,0.01));let a=th;if(b>0.35)a=0;const sgn=p.y<best[1]?-1:1;const v=Math.hypot(p.vx,p.vy);
+    p.vx=v*Math.cos(a);p.vy=sgn*v*Math.sin(a);if(a<0.17)cnt[0]++;else if(a<Math.PI/2)cnt[1]++;else cnt[2]++}});
+  P=P.filter(p=>p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20)}
+ function draw(dt){const {ctx,W,H}=fit(cv,.5,.85);if(!nuc.length||cv._lw!==W){setup(W,H);cv._lw=W}
+  if(run&&dt){acc+=dt*(+$('#ruF').value)*6;while(acc>1){acc--;emit(W,H)}step(dt,W,H)}
+  ctx.fillStyle='#0f1b2d';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#5d6475';ctx.fillRect(8,H/2-26,50,52);txt(ctx,'source α',33,H/2+44,{a:'center',font:"12px Fraunces, serif",c:'#cfd8e3'});
+  ctx.fillStyle='rgba(242,200,90,.18)';ctx.fillRect(W*.55-6,H*.08,26,H*.84);txt(ctx,'feuille d\'or',W*.55+7,H*.06,{a:'center',font:"700 12px Fraunces, serif",c:'#ffd166'});
+  nuc.forEach(n=>{ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(n[0],n[1],1.6,0,7);ctx.fill()});
+  ctx.strokeStyle='rgba(127,209,196,.6)';ctx.beginPath();ctx.arc(W-30,H/2,H*.4,-1.2,1.2);ctx.stroke();
+  P.forEach(p=>{ctx.strokeStyle='rgba(255,120,120,.35)';ctx.lineWidth=1.2;ctx.beginPath();p.trail.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke();ctx.fillStyle='#ff6b6b';ctx.beginPath();ctx.arc(p.x,p.y,2.6,0,7);ctx.fill()});
+  const tot=cnt[0]+cnt[1]+cnt[2]||1;
+  $('#ruRead').innerHTML=`<span>non déviées : <b>${cnt[0]}</b> (${fmt(100*cnt[0]/tot,1)} %)</span><span>déviées : <b>${cnt[1]}</b></span><span>renvoyées : <b>${cnt[2]}</b></span>`;sig(ctx,W,H,true)}
+ $('#ruGo').onclick=()=>{run=!run;$('#ruGo').textContent=run?'⏸ Pause':'▶ Reprendre'};$('#ruR').onclick=()=>{cnt=[0,0,0]};
+ live(cv,dt=>draw(dt));reg('dimensions',()=>draw(0))})();
+
+/* ---------- IV : isotopes ---------- */
+(function(){const cv=$('#cvIso');const SETS=[[1,[1,2,3]],[6,[12,13,14]],[17,[35,37]],[8,[16,17,18]]];let rot=0;
+ function draw(){const {ctx,W,H}=fit(cv,.45,1.85);const [Z,As]=SETS[+$('#isoS').value],n=As.length,narrow=W<640;
+  As.forEach((A,i)=>{const cx=narrow?W/2:W*(i+.5)/n,cy=narrow?H*(i+.5)/n-12:H*.42,R=narrow?Math.min(W*.3,H/n*.36):Math.min(W/n*.36,H*.33);
+   bohr(ctx,cx,cy,R,Z,A-Z,Z,{rot:rot+i,seed:A,labels:false});
+   const ty=narrow?cy+R+20:H*.86;symb(ctx,cx-6,ty,A,Z,EL[Z][0],0,24);
+   txt(ctx,Z+' p · '+(A-Z)+' n · '+Z+' e⁻',cx,ty+(narrow?20:24),{a:'center',font:"700 13px Fraunces, serif",c:C_V})});
+  txt(ctx,narrow?'Même Z, neutrons différents':'Même Z (même élément), nombre de neutrons différent',W/2,18,{a:'center',font:"700 14px Fraunces, serif",c:C_T});sig(ctx,W,H)}
+ $('#isoS').onchange=draw;live(cv,dt=>{rot+=dt*.4;draw()});reg('element',draw)})();
+
+/* ---------- IV : formation d'un ion ---------- */
+(function(){const cv=$('#cvIon');let t=-1,rot=0;
+ function info(Z){const s=shellsOf(Z),v=s[2]||s[1]||s[0];const lose=v<=3&&Z>2;const k=lose?v:8-v;return{lose,k,e2:lose?Z-k:Z+k}}
+ function draw(){const {ctx,W,H}=fit(cv,.5,.9);const Z=+$('#ionS').value,I=info(Z),narrow=W<640;const g=t<0?0:ease(t/2.2);
+  const cx=narrow?W/2:W*.36,cy=narrow?H*.4:H/2,R=narrow?Math.min(W*.38,H*.3):Math.min(W*.27,H*.44);
+  const e=I.lose?(g>0?Z-I.k:Z):(g>=1?I.e2:Z);bohr(ctx,cx,cy,R,Z,EL[Z][2]-Z,e,{rot,seed:Z,allShells:true});
+  // moving electrons
+  const rad=[R*.42,R*.7,R*.98],sh=shellsOf(I.lose?Z:I.e2),outer=sh[2]?2:sh[1]?1:0;
+  for(let k=0;k<I.k;k++){const a=-.6+k*.35;if(I.lose){if(g<=0||g>=1)continue;const x0=cx+rad[outer]*Math.cos(a),y0=cy+rad[outer]*Math.sin(a);elec(ctx,x0+(W*.95-x0)*g,y0-(H*.2)*g,Math.max(4,R*.055))}
+   else{if(g<=0||g>=1)continue;const x1=cx+rad[outer]*Math.cos(2*Math.PI*(sh[outer]-1-k)/sh[outer]+rot*(1-.25*outer)+outer*.4),y1=cy+rad[outer]*Math.sin(2*Math.PI*(sh[outer]-1-k)/sh[outer]+rot*(1-.25*outer)+outer*.4);
+    const x0=W*.97,y0=H*.1+k*14;elec(ctx,x0+(x1-x0)*g,y0+(y1-y0)*g,Math.max(4,R*.055))}}
+  const q=g>=1?(I.lose?I.k:-I.k):0;const bx=narrow?W*.5:W*.76,by=narrow?H*.8:H*.42;
+  symb(ctx,bx,by,'',' ',EL[Z][0],q,narrow?40:56);
+  txt(ctx,g>=1?(I.lose?'cation : perd '+I.k+' électron'+(I.k>1?'s':''):'anion : gagne '+I.k+' électron'+(I.k>1?'s':'')):EL[Z][1]+' (atome neutre)',bx+18,by+(narrow?30:42),{a:'center',font:"700 15px Fraunces, serif",c:g>=1?(I.lose?C_P:C_E):C_T});
+  $('#ionRead').innerHTML=`<span>atome : <b>${formula(Z)}</b></span><span>ion ${EL[Z][0]}${sup(chargeTxt(I.lose?I.k:-I.k).replace('−','-'))} : <b>${formula(I.e2)}</b></span><span>${Z} protons, ${I.e2} électrons</span>`;sig(ctx,W,H)}
+ $('#ionGo').onclick=()=>{t=0};$('#ionS').onchange=()=>{t=-1;draw()};live(cv,dt=>{if(t>=0)t+=dt;rot+=dt*.3;draw()});reg('element',draw)})();
+
+/* ---------- V : remplissage ---------- */
+(function(){const cv=$('#cvSh');let t=99,rot=0;const STEP=.45;
+ function draw(){const {ctx,W,H}=fit(cv,.5,.95);const Z=+$('#shZ').value;$('#shZv').textContent=Z+' ('+EL[Z][0]+')';const narrow=W<640;
+  const placed=Math.min(Z,Math.floor(t/STEP));const cx=narrow?W/2:W*.36,cy=narrow?H*.42:H/2,R=narrow?Math.min(W*.4,H*.32):Math.min(W*.28,H*.45);
+  bohr(ctx,cx,cy,R,Z,EL[Z][2]-Z,placed,{rot,seed:Z,allShells:true});
+  if(placed<Z){const f=(t/STEP)%1,s=shellsOf(placed+1),rad=[R*.42,R*.7,R*.98],sh=s[2]?2:s[1]?1:0;const k=s[sh]-1,a=2*Math.PI*k/Math.max(s[sh],1)+rot*(1-.25*sh)+sh*.4;
+   const x1=cx+rad[sh]*Math.cos(a),y1=cy+rad[sh]*Math.sin(a),x0=W-20,y0=20,g=ease(f);elec(ctx,x0+(x1-x0)*g,y0+(y1-y0)*g,Math.max(4,R*.055))}
+  const s=shellsOf(placed),bx=narrow?14:W*.66;let y=narrow?H*.84:H*.24;
+  const rows=[['K : '+s[0]+' / 2',s[0]===2?C_T:C_K],['L : '+s[1]+' / 8',s[1]===8?C_T:C_K],['M : '+s[2]+' / 8',C_K]];
+  if(!narrow){rows.forEach((r,i)=>txt(ctx,r[0]+(r[1]===C_T?'  saturée':''),bx,y+i*26,{font:"700 17px Fraunces, serif",c:r[1]}));y+=96}
+  txt(ctx,formula(placed),bx,y,{font:"700 22px Fraunces, serif",c:C_P});
+  $('#shRead').innerHTML=`<span>formule : <b>${formula(Z)}</b></span><span>couche externe : <b>${'KLM'[shellsOf(Z)[2]?2:shellsOf(Z)[1]?1:0]}</b></span><span>électrons de valence : <b>${shellsOf(Z)[2]||shellsOf(Z)[1]||shellsOf(Z)[0]}</b></span>`;sig(ctx,W,H)}
+ $('#shGo').onclick=()=>{t=0};$('#shZ').oninput=()=>{t=99;draw()};live(cv,dt=>{t+=dt;rot+=dt*.3;draw()});reg('repartition',draw)})();
+
+/* ---------- VI : générateur ---------- */
+(function(){const B=$('#gnBox');let sol=false,cur;
+ function nw(){const Z=3+Math.floor(Math.random()*16),A=EL[Z][2],N=A-Z,s=shellsOf(Z),v=s[2]||s[1]||s[0],lose=v<=3;cur={Z,A,N,v,lose};sol=false;render()}
+ function render(){const {Z,A,N,v,lose}=cur,q=Z*1.6e-19,k=lose?v:8-v;
+  let h=`<p>Le noyau d'un atome X porte une charge <b>q = ${sci(q,2)} C</b> et contient <b>${N} neutrons</b>. (e = 1,6×10⁻¹⁹ C ; m<sub>p</sub> ≈ m<sub>n</sub> ≈ 1,67×10⁻²⁷ kg)</p>
+  <ol><li>Calculer Z.</li><li>Calculer A et écrire le symbole du noyau (X = ${EL[Z][0]}).</li><li>Calculer la masse approchée de l'atome.</li><li>Écrire la formule électronique ; nombre d'électrons de valence ?</li><li>Quel ion cet atome a-t-il tendance à former ?</li></ol>`;
+  if(sol)h+=`<div class="note"><b>Correction :</b><br>1. Z = q/e = ${sci(q,2)} / 1,6×10⁻¹⁹ = <b>${Z}</b> (${EL[Z][1]})<br>2. A = Z + N = ${Z} + ${N} = <b>${A}</b> ; symbole <b><sup>${A}</sup><sub>${Z}</sub>${EL[Z][0]}</b><br>3. m ≈ A × m<sub>p</sub> = ${A} × 1,67×10⁻²⁷ ≈ <b>${sci(A*1.67e-27,2)} kg</b><br>4. <b>${formula(Z)}</b> : <b>${v}</b> électron${v>1?'s':''} de valence<br>5. ${Z===18||Z===10?'Gaz noble : il est déjà stable, il ne forme pas d\'ion.':lose?'Il perd '+k+' électron'+(k>1?'s':'')+' : ion <b>'+EL[Z][0]+sup(chargeTxt(k).replace('−','-'))+'</b>, charge +'+k+'e = '+sci(k*1.6e-19,1)+' C':'Il gagne '+k+' électron'+(k>1?'s':'')+' : ion <b>'+EL[Z][0]+sup(chargeTxt(-k).replace('−','-'))+'</b>, charge −'+k+'e = −'+sci(k*1.6e-19,1)+' C'}</div>`;
+  B.innerHTML=h}
+ $('#gnNew').onclick=nw;$('#gnSol').onclick=()=>{sol=!sol;render()};nw()})();
+
+/* ---------- Quiz ---------- */
+const QZ={
+ c1:[['Le noyau d\'un atome est formé :',['de protons et d\'électrons','de protons et de neutrons','d\'électrons et de neutrons','uniquement d\'électrons'],1,'Les protons et les neutrons sont les nucléons.'],
+  ['La charge d\'un électron vaut :',['+e','0','−e','−2e'],2,'q(e⁻) = −e = −1,6×10⁻¹⁹ C.'],
+  ['Le neutron est :',['positif','négatif','neutre','tantôt positif, tantôt négatif'],2,'Sa charge est nulle.'],
+  ['La masse d\'un proton est environ :',['égale à celle d\'un électron','1840 fois celle d\'un électron','1840 fois plus petite que celle d\'un électron','nulle'],1,'m_p/m_e ≈ 1840.'],
+  ['Un atome est électriquement neutre car :',['il n\'a pas de charges','il contient autant de protons que d\'électrons','il contient autant de neutrons que de protons','ses électrons sont neutres'],1,'+Ze − Ze = 0.']],
+ c2:[['Dans le symbole ᴬ_Z X, Z représente :',['le nombre de nucléons','le nombre de neutrons','le nombre de protons','la masse'],2,'Z est le numéro atomique = nombre de protons.'],
+  ['Le nombre de neutrons de ²³₁₁Na est :',['11','12','23','34'],1,'N = A − Z = 23 − 11 = 12.'],
+  ['L\'ion ²⁷₁₃Al³⁺ possède :',['13 électrons','16 électrons','10 électrons','27 électrons'],2,'Il a perdu 3 électrons : 13 − 3 = 10.'],
+  ['L\'ion ³⁵₁₇Cl⁻ possède :',['17 électrons','18 électrons','16 électrons','35 électrons'],1,'Il a gagné 1 électron : 17 + 1 = 18.'],
+  ['A représente :',['le nombre de protons','le nombre d\'électrons','le nombre de nucléons','le nombre de couches'],2,'A = Z + N.']],
+ c3:[['Le rayon d\'un atome est de l\'ordre de :',['10⁻¹⁵ m','10⁻¹⁰ m','10⁻⁵ m','1 m'],1,'r_atome ≈ 10⁻¹⁰ m = 0,1 nm.'],
+  ['Le rayon du noyau est de l\'ordre de :',['10⁻¹⁵ m','10⁻¹⁰ m','10⁻¹² m','10⁻³ m'],0,'r_noyau ≈ 10⁻¹⁵ m.'],
+  ['Le rapport r_atome / r_noyau vaut environ :',['10','1000','10⁵','10¹⁰'],2,'10⁻¹⁰ / 10⁻¹⁵ = 10⁵.'],
+  ['Dans l\'expérience de Rutherford, la plupart des particules α :',['sont renvoyées','traversent la feuille sans être déviées','sont absorbées','sont toutes déviées'],1,'L\'atome est presque vide.'],
+  ['On dit que la matière a une structure :',['compacte','lacunaire','pleine','continue'],1,'Entre le noyau et les électrons, il y a du vide.']],
+ c4:[['Un élément chimique est caractérisé par :',['son nombre de neutrons','son nombre de masse A','son numéro atomique Z','sa masse'],2,'Toutes les entités de même Z appartiennent au même élément.'],
+  ['¹²C et ¹⁴C sont :',['des ions','des isotopes','des éléments différents','des molécules'],1,'Même Z = 6, A différent.'],
+  ['Deux isotopes diffèrent par leur nombre de :',['protons','électrons','neutrons','charges'],2,'Même Z, N différent.'],
+  ['Un atome qui perd des électrons devient :',['un anion','un cation','un isotope','une molécule'],1,'Il devient un ion positif : un cation.'],
+  ['L\'atome de chlore Cl gagne un électron, il devient :',['Cl⁺','Cl⁻','Cl²⁻','Ar'],1,'Ion chlorure Cl⁻ (anion).']],
+ c5:[['La couche L (n = 2) contient au maximum :',['2 électrons','8 électrons','18 électrons','32 électrons'],1,'2n² = 2 × 4 = 8.'],
+  ['L\'ordre de remplissage des couches est :',['M → L → K','K → M → L','K → L → M','L → K → M'],2,'On commence par la couche la plus proche du noyau.'],
+  ['La formule électronique du sodium (Z = 11) est :',['(K)²(L)⁹','(K)²(L)⁸(M)¹','(K)¹(L)⁸(M)²','(K)³(L)⁸'],1,'2 + 8 + 1 = 11.'],
+  ['Le nombre d\'électrons de valence du chlore (Z = 17) est :',['1','7','8','17'],1,'(K)²(L)⁸(M)⁷ : 7 électrons sur la couche externe.'],
+  ['La formule (K)²(L)⁶ correspond à :',['le carbone','l\'azote','l\'oxygène','le néon'],2,'2 + 6 = 8 électrons : Z = 8, oxygène.']],
+ c6:[['Un noyau porte une charge q = 1,92×10⁻¹⁸ C. Son numéro atomique est :',['10','12','14','16'],1,'Z = q/e = 1,92×10⁻¹⁸ / 1,6×10⁻¹⁹ = 12.'],
+  ['Un atome a Z = 13 et N = 14 ; son nombre de masse est :',['13','14','27','1'],2,'A = Z + N = 27.'],
+  ['La masse approchée de ²⁷Al est :',['4,5×10⁻²⁶ kg','2,7×10⁻²⁷ kg','1,67×10⁻²⁷ kg','4,5×10⁻²⁸ kg'],0,'m ≈ 27 × 1,67×10⁻²⁷ ≈ 4,5×10⁻²⁶ kg.'],
+  ['L\'aluminium (K)²(L)⁸(M)³ forme l\'ion :',['Al⁺','Al³⁺','Al³⁻','Al⁵⁻'],1,'Il perd ses 3 électrons de valence.'],
+  ['La charge de l\'ion Al³⁺ vaut :',['3 C','+4,8×10⁻¹⁹ C','−4,8×10⁻¹⁹ C','+1,6×10⁻¹⁹ C'],1,'q = +3e = 4,8×10⁻¹⁹ C.']]};
+$$('.quiz').forEach(box=>{const Q=QZ[box.dataset.q];const sc=document.createElement('div');sc.className='score';box.after(sc);
+ function render(){box.innerHTML='';let score=0,done=0;sc.innerHTML=`<span>Note : <b>0</b> / 20 · <span class="qd">0</span>/5</span><button class="btn sm">↺ Recommencer</button>`;sc.querySelector('button').onclick=render;
+  const upd=()=>{sc.querySelector('b').textContent=score;sc.querySelector('.qd').textContent=done===5?('5 — '+(score>=18?'Excellent !':score>=14?'Très bien !':score>=10?'Assez bien.':'À retravailler.')):done};
+  Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q';d.innerHTML=`<p>${i+1}. ${q[0]} <span style="color:#6d4bb0;font-size:13px">(4 pts)</span></p><div class="ops"></div><div class="exp"></div>`;const ops=d.querySelector('.ops');
+   q[1].forEach((o,j)=>{const b=document.createElement('button');b.textContent=String.fromCharCode(97+j)+') '+o;b.onclick=()=>{ops.querySelectorAll('button').forEach((x,kk)=>{x.disabled=true;if(kk===q[2])x.classList.add('ok')});if(j===q[2])score+=4;else b.classList.add('ko');done++;d.classList.add('done');d.querySelector('.exp').innerHTML=(j===q[2]?'✔ <b>Bonne réponse.</b> ':'✘ <b>Réponse incorrecte.</b> ')+q[3];upd()};ops.appendChild(b)});box.appendChild(d)})}
+ render()});
+show();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>redraw());
+
+</script>
+</body>
+</html>
